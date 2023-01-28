@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="start">Start tracking</button>
+    <button id="stop">Stop tracking</button>
+    <div id="output"></div>
+    <script>
+        var watchId = 0;
+        document.getElementById("start").addEventListener("click", () => {
+            if (navigator.geolocation) {
+                watchId = navigator.geolocation.watchPosition(pos => {
+                    document.getElementById("output").innerHTML = `<h3>Your current location</h3>
+                        <div>Latitude: ${pos.coords.latitude}</div>
+                        <div>Longitude: ${pos.coords.longitude}</div>`;
+                }, err => {
+                    console.log(err);
+                });
+            }
+        });
+        document.getElementById("stop").addEventListener("click", () => {
+            if (watchId) navigator.geolocation.clearWatch(watchId);
+            document.getElementById("output").innerHTML = "Location tracking stopped";
+        }, false);
+    </script>
+</body>
+
+</html>
