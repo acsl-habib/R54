@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button id="watch">Watch Position</button>
+        <button id="stop">Stop watch</button>
+    </div>
+    <div id="output">
+
+    </div>
+    <script>
+        var watchId;
+        if(navigator.geolocation){
+            document.getElementById("watch").addEventListener("click", ()=>{
+                watchId=navigator.geolocation.watchPosition(
+                pos=>{
+                document.getElementById('output').innerHTML = `<div>Longitude: ${pos.coords.longitude}</div>
+                                                    <div>Latitude: ${pos.coords.latitude}</div>
+                                                    <div>Altitude: ${pos.coords.altitude}</div>
+                                                    <div>Time: ${new Date(pos.timestamp).toString()}</div>
+                                                    `;
+            }, err=>{
+                document.getElementById('output').innerHTML=err.message || err;
+            }, {
+                    enableHighAccuracy: true,
+                    timeout: 3000,
+                    maximumAge: 20000
+            }
+            );
+            }, false);
+            document.getElementById('stop').addEventListener('click', ()=>{
+                if(watchId){
+                    navigator.geolocation.clearWatch(watchId);
+                    watchId=null;
+                    document.getElementById('output').innerHTML='Watch ended';
+                }
+            }, false);
+        }
+        else
+        {
+            document.getElementById('output').innerHTML='No location support';
+        }
+    </script>
+</body>
+</html>
