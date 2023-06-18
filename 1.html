@@ -16,7 +16,8 @@
     </div>
     <script>
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(pos=>{
+            navigator.geolocation.getCurrentPosition(
+                pos=>{
                 document.getElementById('output').innerHTML = `<div>Longitude: ${pos.coords.longitude}</div>
                                                     <div>Latitude: ${pos.coords.latitude}</div>
                                                     <div>Altitude: ${pos.coords.altitude}</div>
@@ -24,7 +25,12 @@
                                                     `;
             }, err=>{
                 document.getElementById('output').innerHTML=err.message || err;
-            });
+            }, {
+                    enableHighAccuracy: true,
+                    timeout: 3000,
+                    maximumAge: 20000
+            }
+            );
         }
         else
         {
